@@ -30,11 +30,11 @@ public class Movie implements Serializable {
     private long id;
     private String title;
     private String description;
-    private String bgImageUrl;
+    private String bgImageUrl="http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg";
     private String cardImageUrl;
     private String videoUrl;
     private String studio;
-    private String category;
+    private String category="Cat";
 
     public Movie() {
     }
