@@ -12,11 +12,10 @@
  * the License.
  */
 
-package shop.tv.rsys.com.tvapplication;
+package android.support.v17.leanback.app;
 
 import java.net.URI;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,22 +25,16 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v17.leanback.app.BackgroundManager;
-import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
-import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
-import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,8 +48,13 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import shop.tv.rsys.com.tvapplication.BrowseErrorActivity;
+import shop.tv.rsys.com.tvapplication.CardPresenter;
+import shop.tv.rsys.com.tvapplication.DetailsActivity;
+import shop.tv.rsys.com.tvapplication.Movie;
+import shop.tv.rsys.com.tvapplication.MovieList;
+import shop.tv.rsys.com.tvapplication.R;
 import shop.tv.rsys.com.tvapplication.custom.IconHeaderItem;
-import shop.tv.rsys.com.tvapplication.custom.IconHeaderItemPresenter;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";
@@ -82,7 +80,15 @@ public class MainFragment extends BrowseFragment {
         setupUIElements();
         loadRows();
         setupEventListeners();
+       // mBrowseFrame.setOnChildFocusListener(mOnChildFocusListener);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBrowseFrame.getLayoutParams();
+        params.setMargins(200, 2, 3, 4);
+        mBrowseFrame.setLayoutParams(params);
+
+
+        mHeadersFragment.setAllowEnterTransitionOverlap(false);
     }
+
 
     @Override
     public void onDestroy() {
@@ -96,7 +102,7 @@ public class MainFragment extends BrowseFragment {
     private void loadRows() {
         List<Movie> list = MovieList.setupMovies();
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        CardPresenter cardPresenter = new CardPresenter();
+        CardPresenter cardPresenter = new CardPresenter(getActivity());
         int i;
         for (i = 0; i < NUM_ROWS; i++) {
             if (i != 0) {
@@ -128,7 +134,7 @@ public class MainFragment extends BrowseFragment {
         setTitle(getString(R.string.browse_title)); // Badge, when set, takes precedent
         // over title
         setHeadersState(HEADERS_ENABLED);
-        setHeadersTransitionOnBackEnabled(true);
+        setHeadersTransitionOnBackEnabled(false);
         // set fastLane (or headers) background color
         setBrandColor(getResources().getColor(R.color.fastlane_background));
         // set search icon color
@@ -153,6 +159,11 @@ public class MainFragment extends BrowseFragment {
 
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
+
+        setBrowseTransitionListener(new BrowseTransitionListener(){
+
+
+        });
 
     }
 
@@ -245,7 +256,7 @@ public class MainFragment extends BrowseFragment {
             view.setLayoutParams(new ViewGroup.LayoutParams(GRID_ITEM_WIDTH, GRID_ITEM_HEIGHT));
             view.setFocusable(true);
             view.setFocusableInTouchMode(true);
-            view.setBackgroundColor(getResources().getColor(R.color.default_background));
+          //  view.setBackgroundColor(getResources().getColor(R.color.default_background));
             view.setTextColor(Color.WHITE);
             view.setGravity(Gravity.CENTER);
             return new ViewHolder(view);
@@ -260,16 +271,6 @@ public class MainFragment extends BrowseFragment {
         public void onUnbindViewHolder(ViewHolder viewHolder) {
         }
     }
-
-
-
-
-
-
-
-
-
-
 
   /*  @Override
     public void onLoadFinished(Loader<LinkedHashMap<String, List<Movie>>> loader, LinkedHashMap<String, List<Movie>> data) {

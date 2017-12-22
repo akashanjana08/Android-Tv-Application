@@ -25,13 +25,15 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
+
         mUnselectedAlpha = viewGroup.getResources()
                 .getFraction(R.fraction.lb_browse_header_unselect_alpha, 1, 1);
         LayoutInflater inflater = (LayoutInflater) viewGroup.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.icon_header_item, null);
-        view.setAlpha(mUnselectedAlpha); // Initialize icons to be at half-opacity.
+
+        //view.setAlpha(mUnselectedAlpha); // Initialize icons to be at half-opacity.
 
         return new ViewHolder(view);
     }
@@ -40,7 +42,7 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
         HeaderItem headerItem = ((PageRow) item).getHeaderItem();
         View rootView = viewHolder.view;
-        rootView.setFocusable(true);
+        //rootView.setFocusable(true);
 
         /*ImageView iconView = (ImageView) rootView.findViewById(R.id.header_icon);
         Drawable icon = rootView.getResources().getDrawable(R.drawable.android_header, null);

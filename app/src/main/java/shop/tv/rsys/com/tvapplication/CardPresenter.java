@@ -14,10 +14,16 @@
 
 package shop.tv.rsys.com.tvapplication;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v17.leanback.widget.BaseCardView;
+import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
+import android.support.v17.leanback.widget.VerticalGridView;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -29,26 +35,39 @@ import com.bumptech.glide.Glide;
 public class CardPresenter extends Presenter {
     private static final String TAG = "CardPresenter";
 
-    private static final int CARD_WIDTH = 300;
-    private static final int CARD_HEIGHT = 406;
-    private static int sSelectedBackgroundColor;
-    private static int sDefaultBackgroundColor;
+    private static final int CARD_WIDTH = 250;
+    private static final int CARD_HEIGHT = 306;
+    private static Drawable sSelectedBackgroundColor;
+    private static Drawable sDefaultBackgroundColor;
     private Drawable mDefaultCardImage;
+    private static  Context mContext;
+
+    public CardPresenter()
+    {}
+
+    public CardPresenter(Context mContext)
+    {
+        this.mContext= mContext;
+    }
 
     private static void updateCardBackgroundColor(ImageCardView view, boolean selected) {
-        int color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
+        Drawable color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
         // Both background colors should be set because the view's background is temporarily visible
         // during animations.
-        view.setBackgroundColor(color);
-        view.findViewById(R.id.info_field).setBackgroundColor(color);
+        //view.setBackgroundColor(color);
+        view.setBackground(ContextCompat.getDrawable(mContext, R.drawable.card_back_ground_color));
+        //view.findViewById(R.id.info_field).setBackgroundColor(color);
+        view.findViewById(R.id.info_field).setBackgroundDrawable(color);
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
         Log.d(TAG, "onCreateViewHolder");
-
-        sDefaultBackgroundColor = parent.getResources().getColor(R.color.default_background);
-        sSelectedBackgroundColor = parent.getResources().getColor(R.color.selected_background);
+        //sDefaultBackgroundColor  = parent.getResources().getColor(R.color.default_background);
+        sDefaultBackgroundColor  = ContextCompat.getDrawable(mContext, R.drawable.back_ground);
+        //sSelectedBackgroundColor = parent.getResources().getColor(R.color.selected_background);
+        sSelectedBackgroundColor = ContextCompat.getDrawable(mContext, R.drawable.card_back_ground_color);
         mDefaultCardImage = parent.getResources().getDrawable(R.drawable.movie);
 
         ImageCardView cardView = new ImageCardView(parent.getContext()) {
@@ -58,7 +77,8 @@ public class CardPresenter extends Presenter {
                 super.setSelected(selected);
             }
         };
-
+        //cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_SELECTED);
+        cardView.clearFocus();
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
         updateCardBackgroundColor(cardView, false);
