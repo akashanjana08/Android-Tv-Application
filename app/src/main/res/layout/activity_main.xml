@@ -27,13 +27,13 @@
             android:orientation="vertical"
             android:layout_marginTop="5dp">
 
-            <shop.tv.rsys.com.tvapplication.ui.font.TextViewLight
+            <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="shop"
                 android:textSize="22dp" />
 
-            <shop.tv.rsys.com.tvapplication.ui.font.TextViewLight
+            <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="mar. 19 dec | 06:28"

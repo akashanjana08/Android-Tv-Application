@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/top_header"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#010226"
+>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        >
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:src="@mipmap/ic_launcher_pxs" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+            <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shop"
+                android:textSize="22dp" />
+
+            <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mar. 19 dec | 06:28"
+                android:textSize="15dp"
+                android:alpha="0.6"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/header_views_linearlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="60dp"
+        >
+
+        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
+            android:id="@+id/home_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textColor="@drawable/button_focus"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:focusable="true"
+
+            />
+
+        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
+            android:id="@+id/mylib_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Library"
+            android:textColor="@drawable/button_focus"
+            android:textAllCaps="false"
+            android:layout_marginLeft="20dp"
+            android:focusable="true"
+            android:textSize="20dp"
+            />
+
+
+        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
+            android:id="@+id/shop_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="shop"
+            android:textColor="@drawable/button_focus"
+            android:textAllCaps="false"
+            android:focusable="true"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+
+        >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="45dp"
+            >
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/serach_selector"
+                />
+
+            <Button
+                android:id="@+id/hombvfe_texdstview"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/setting_selector"
+                />
+
+            <Button
+                android:id="@+id/error_texdstview"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ico_error_selector"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="false"
+                android:src="@drawable/gradient_main"
+                android:alpha="0.3"
+                />
+
+            <fragment
+                android:id="@+id/main_browse_fragment"
+                android:name="shop.tv.rsys.com.tvapplication.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity"
+                tools:deviceIds="tv"
+                tools:ignore="MergeRootFrame"
+                android:layout_marginTop="20dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
+
+</LinearLayout>

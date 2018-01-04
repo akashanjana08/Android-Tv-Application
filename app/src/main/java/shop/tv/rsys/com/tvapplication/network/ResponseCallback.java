@@ -9,5 +9,5 @@ import shop.tv.rsys.com.tvapplication.model.BtaResponseModel;
  */
 
 public interface ResponseCallback {
-    public void getResponse(List<BtaResponseModel.Movie> list);
+     void getResponse(List<BtaResponseModel.Movie> list);
 }

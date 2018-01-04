@@ -12,7 +12,7 @@
  * the License.
  */
 
-package android.support.v17.leanback.app;
+package shop.tv.rsys.com.tvapplication;
 
 import java.net.URI;
 import java.util.Collections;
@@ -25,7 +25,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v17.leanback.app.BackgroundManager;
+import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
+import android.support.v17.leanback.widget.BrowseFrameLayout;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
@@ -40,6 +43,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,13 +52,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import shop.tv.rsys.com.tvapplication.BrowseErrorActivity;
-import shop.tv.rsys.com.tvapplication.CardPresenter;
-import shop.tv.rsys.com.tvapplication.DetailsActivity;
-import shop.tv.rsys.com.tvapplication.Movie;
-import shop.tv.rsys.com.tvapplication.MovieList;
-import shop.tv.rsys.com.tvapplication.R;
-import shop.tv.rsys.com.tvapplication.custom.IconHeaderItem;
+import shop.tv.rsys.com.tvapplication.customheader.IconHeaderItem;
+import shop.tv.rsys.com.tvapplication.hub.HubActivity;
 
 public class MainFragment extends BrowseFragment {
     private static final String TAG = "MainFragment";
@@ -62,7 +61,7 @@ public class MainFragment extends BrowseFragment {
     private static final int BACKGROUND_UPDATE_DELAY = 300;
     private static final int GRID_ITEM_WIDTH = 200;
     private static final int GRID_ITEM_HEIGHT = 200;
-    private static final int NUM_ROWS = 6;
+    private static final int NUM_ROWS = 2;
     private static final int NUM_COLS = 10;
     private final Handler mHandler = new Handler();
     private ArrayObjectAdapter mRowsAdapter;
@@ -72,6 +71,7 @@ public class MainFragment extends BrowseFragment {
     private URI mBackgroundURI;
     private BackgroundManager mBackgroundManager;
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate");
@@ -80,13 +80,9 @@ public class MainFragment extends BrowseFragment {
         setupUIElements();
         loadRows();
         setupEventListeners();
+        initFocusManagement();
        // mBrowseFrame.setOnChildFocusListener(mOnChildFocusListener);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBrowseFrame.getLayoutParams();
-        params.setMargins(200, 2, 3, 4);
-        mBrowseFrame.setLayoutParams(params);
-
-
-        mHeadersFragment.setAllowEnterTransitionOverlap(false);
+       // setSelectedPosition(3, true, new ListRowPresenter.SelectItemViewHolderTask(4));
     }
 
 
@@ -131,9 +127,9 @@ public class MainFragment extends BrowseFragment {
     private void setupUIElements() {
         // setBadgeDrawable(getActivity().getResources().getDrawable(
         // R.drawable.videos_by_google_banner));
-        setTitle(getString(R.string.browse_title)); // Badge, when set, takes precedent
+        setTitle(""); // Badge, when set, takes precedent
         // over title
-        setHeadersState(HEADERS_ENABLED);
+        setHeadersState(HEADERS_DISABLED);
         setHeadersTransitionOnBackEnabled(false);
         // set fastLane (or headers) background color
         setBrandColor(getResources().getColor(R.color.fastlane_background));
@@ -148,14 +144,14 @@ public class MainFragment extends BrowseFragment {
     }
 
     private void setupEventListeners() {
-        setOnSearchClickedListener(new View.OnClickListener() {
+        /*setOnSearchClickedListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Implement your own in-app search", Toast.LENGTH_LONG)
                         .show();
             }
-        });
+        });*/
 
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
@@ -280,5 +276,91 @@ public class MainFragment extends BrowseFragment {
         mVideoListRowArray.add(new ListRow(header, cardRowAdapter));
 
     }*/
+
+    private final int maxHookIntoFocusTries = 5;
+    private int hookIntoFocusTries = 0;
+
+    private void initFocusManagement() {
+        View view = getView();
+        Handler handler = new Handler();
+        if(view == null){
+            //Wait for the view to be added
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    initFocusManagement();
+                }
+            };
+            handler.postDelayed(runnable, 250);
+        }
+        if ( view instanceof ViewGroup) {
+            boolean found = hookIntoFocusSearch((ViewGroup) view);
+            if ( found ){
+               // Timber.d("Successfully fixed focus");   //This is just a log
+            }else if(hookIntoFocusTries < maxHookIntoFocusTries){
+                //Allow multiple attempts to hook into the focus system
+                //I want to say this was needed for when the browse fragment was
+                //created but the child content hadn't been populated yet.
+                //Been a while since I've messed with this code though
+                hookIntoFocusTries++;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initFocusManagement();
+                    }
+                }, 250);
+            }
+        }
+    }
+
+    private boolean hookIntoFocusSearch(ViewGroup vg) {
+        boolean found = false;
+        for ( int i=0; i<vg.getChildCount(); i++ ) {
+            View view = vg.getChildAt(i);
+            if ( view instanceof BrowseFrameLayout) {
+                BrowseFrameLayout bfl = (BrowseFrameLayout)view;
+                bfl.setOnFocusSearchListener(new BrowseFrameLayout.OnFocusSearchListener() {
+                    @Override
+                    public View onFocusSearch(View focused, int direction) {
+                        if ( direction == View.FOCUS_UP ) {
+                            return getLastHeaderFocusView();
+                        }else {
+                            return null;
+                        }
+                    }
+                });
+                found = true;
+                break;
+            } else if ( view instanceof ViewGroup ) {
+                boolean foundInRecurse = hookIntoFocusSearch((ViewGroup)view);
+                if ( foundInRecurse ) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+
+
+    private View getLastHeaderFocusView()
+    {
+        int lastHeaderFocus = HubActivity.headerFocus;
+        int viewFocusId=0;
+        switch(lastHeaderFocus){
+            case 0:
+                viewFocusId =  R.id.home_textview;
+                break;
+            case 1:
+                viewFocusId =  R.id.mylib_textview;
+                break;
+            case 2:
+                viewFocusId =  R.id.shop_textview;
+                break;
+            default:
+        }
+        View view = getActivity().findViewById(viewFocusId);
+        return  view;
+    }
 }
 

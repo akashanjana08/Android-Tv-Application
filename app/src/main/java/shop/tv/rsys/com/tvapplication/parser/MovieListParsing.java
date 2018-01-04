@@ -26,7 +26,6 @@ public class MovieListParsing {
                   movie.setCardImageUrl(btaMovie.getPosterImage());
                   movieList.add(movie);
               }
-
         return  movieList;
     }
 }

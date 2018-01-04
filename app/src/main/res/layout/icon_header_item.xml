@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     >
 
-    <shop.tv.rsys.com.tvapplication.ui.font.TextViewLight
+    <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
         android:id="@+id/header_label"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

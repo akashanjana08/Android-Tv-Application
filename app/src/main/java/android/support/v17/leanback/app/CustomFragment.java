@@ -2,14 +2,10 @@ package android.support.v17.leanback.app;
 
 import android.app.Fragment;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v17.leanback.transition.TransitionHelper;
-import android.support.v17.leanback.transition.TransitionListener;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
-import android.support.v17.leanback.widget.BrowseFrameLayout;
 import android.support.v17.leanback.widget.FocusHighlight;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
@@ -19,9 +15,6 @@ import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
-import android.support.v17.leanback.widget.VerticalGridView;
-import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,8 +24,8 @@ import java.util.Map;
 import shop.tv.rsys.com.tvapplication.CardPresenter;
 import shop.tv.rsys.com.tvapplication.Movie;
 import shop.tv.rsys.com.tvapplication.R;
-import shop.tv.rsys.com.tvapplication.custom.IconHeaderItem;
-import shop.tv.rsys.com.tvapplication.custom.IconHeaderItemPresenter;
+import shop.tv.rsys.com.tvapplication.customheader.IconHeaderItem;
+import shop.tv.rsys.com.tvapplication.customheader.IconHeaderItemPresenter;
 import shop.tv.rsys.com.tvapplication.model.BtaResponseModel;
 import shop.tv.rsys.com.tvapplication.network.ResponseCallback;
 import shop.tv.rsys.com.tvapplication.network.RetrofitCallbackResponse;
@@ -72,9 +65,6 @@ public class CustomFragment extends BrowseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         progressBar = (ProgressBar)getActivity().findViewById(R.id.progressBar);
-        mBrowseFrame.setOnChildFocusListener(mOnChildFocusListener);
-       // mBrowseFrame.setBackgroundColor(getResources().getColor(R.color.hpg_color));
-        mBrowseFrame.setOnFocusSearchListener(mOnFocusSearchListener);
     }
 
     private void setupUi() {
@@ -83,7 +73,7 @@ public class CustomFragment extends BrowseFragment {
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
         setBrandColor(Color.argb(1,1,2,38));
-        //setBrandColor(getResources().getColor(R.color.fastlane_background));
+       // setBrandColor(getResources().getColor(R.color.fastlane_background));
         setTitle("");
         setHeaderPresenterSelector(new PresenterSelector() {
             @Override
@@ -92,7 +82,6 @@ public class CustomFragment extends BrowseFragment {
             }
         });
         //prepareEntranceTransition();
-
     }
 
     private  class PageRowFragmentFactory extends BrowseFragment.FragmentFactory {
@@ -146,7 +135,6 @@ public class CustomFragment extends BrowseFragment {
         IconHeaderItem gridItemPresenterHeader4 = new IconHeaderItem(HEADER_ID_4, HEADER_NAME_4,R.id.header_radio_button);
         PageRow pageRow4 = new PageRow(gridItemPresenterHeader4);
         mRowsAdapter.add(pageRow4);
-
     }
 
 
@@ -158,7 +146,6 @@ public class CustomFragment extends BrowseFragment {
         private static final int NUM_COLS = 10;
         String sortValue=null;
         public SampleFragmentA(){
-            enableRowScaling(false);
         }
         public SampleFragmentA(String sortValue) {
             this.sortValue=sortValue;
@@ -198,8 +185,8 @@ public class CustomFragment extends BrowseFragment {
             }, getQueryMap(sortValue));
         }
 
-        private void loadRows() {
 
+        private void loadRows() {
             mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter(FocusHighlight.ZOOM_FACTOR_LARGE));
             CardPresenter cardPresenter = new CardPresenter(getActivity());
             int i,elemets=0;
@@ -245,130 +232,5 @@ public class CustomFragment extends BrowseFragment {
         queryMap.put("MAC","0022CEC5725B");
         return queryMap;
     }
-
-    private final BrowseFrameLayout.OnChildFocusListener mOnChildFocusListener =
-            new BrowseFrameLayout.OnChildFocusListener() {
-
-                @Override
-                public boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
-                    if (getChildFragmentManager().isDestroyed()) {
-                        return true;
-                    }
-                    // Make sure not changing focus when requestFocus() is called.
-                    if (mCanShowHeaders && mShowingHeaders) {
-                        if (mHeadersFragment != null && mHeadersFragment.getView() != null
-                                && mHeadersFragment.getView().requestFocus(
-                                direction, previouslyFocusedRect)) {
-                            return true;
-                        }
-                    }
-                    if (mMainFragment != null && mMainFragment.getView() != null
-                            && mMainFragment.getView().requestFocus(direction, previouslyFocusedRect)) {
-                        return true;
-                    }
-                    return getTitleView() != null
-                            && getTitleView().requestFocus(direction, previouslyFocusedRect);
-                }
-
-                @Override
-                public void onRequestChildFocus(View child, View focused) {
-                    if (getChildFragmentManager().isDestroyed()) {
-                        return;
-                    }
-                    if (!mCanShowHeaders || isInHeadersTransition()) return;
-                    int childId = child.getId();
-                    if (childId == android.support.v17.leanback.R.id.browse_container_dock && mShowingHeaders) {
-                        startHeadersTransitionInternal(false);
-                    } else if (childId == android.support.v17.leanback.R.id.browse_headers_dock && !mShowingHeaders) {
-                        startHeadersTransitionInternal(true);
-                    }
-                }
-            };
-
-    void createHeadersTransition() {
-        mHeadersTransition = TransitionHelper.loadTransition(FragmentUtil.getContext(this),
-                mShowingHeaders
-                        ? android.support.v17.leanback.R.transition.lb_browse_headers_in : android.support.v17.leanback.R.transition.lb_browse_headers_out);
-
-        TransitionHelper.addTransitionListener(mHeadersTransition, new TransitionListener() {
-            @Override
-            public void onTransitionStart(Object transition) {
-            }
-            @Override
-            public void onTransitionEnd(Object transition) {
-                mHeadersTransition = null;
-                if (mMainFragmentAdapter != null) {
-                    mMainFragmentAdapter.onTransitionEnd();
-                    if (!mShowingHeaders && mMainFragment != null) {
-                        View mainFragmentView = mMainFragment.getView();
-                        if (mainFragmentView != null && !mainFragmentView.hasFocus()) {
-                            mainFragmentView.requestFocus();
-                        }
-                    }
-                }
-                if (mHeadersFragment != null) {
-                    mHeadersFragment.onTransitionEnd();
-                    if (mShowingHeaders) {
-                        VerticalGridView headerGridView = mHeadersFragment.getVerticalGridView();
-                        if (headerGridView != null && !headerGridView.hasFocus()) {
-                            headerGridView.requestFocus();
-                        }
-                    }
-                }
-
-                // Animate TitleView once header animation is complete.
-                updateTitleViewVisibility();
-
-                if (mBrowseTransitionListener != null) {
-                    mBrowseTransitionListener.onHeadersTransitionStop(mShowingHeaders);
-                }
-            }
-        });
-    }
-
-    private final BrowseFrameLayout.OnFocusSearchListener mOnFocusSearchListener =
-            new BrowseFrameLayout.OnFocusSearchListener() {
-                @Override
-                public View onFocusSearch(View focused, int direction) {
-                    // if headers is running transition,  focus stays
-                    if (mCanShowHeaders && isInHeadersTransition()) {
-                        return focused;
-                    }
-                    //mShowingHeaders=false;
-                    if (DEBUG) Log.v(TAG, "onFocusSearch focused " + focused + " + direction " + direction);
-
-                    if (getTitleView() != null && focused != getTitleView()
-                            && direction == View.FOCUS_UP) {
-                        return getTitleView();
-                    }
-                    if (getTitleView() != null && getTitleView().hasFocus()
-                            && direction == View.FOCUS_DOWN) {
-                        return mCanShowHeaders && mShowingHeaders
-                                ? mHeadersFragment.getVerticalGridView() : mMainFragment.getView();
-                    }
-
-                    boolean isRtl = ViewCompat.getLayoutDirection(focused) == View.LAYOUT_DIRECTION_RTL;
-                    int towardStart = isRtl ? View.FOCUS_RIGHT : View.FOCUS_LEFT;
-                    int towardEnd = isRtl ? View.FOCUS_LEFT : View.FOCUS_RIGHT;
-                    if (mCanShowHeaders && direction == towardStart) {
-                        if (isVerticalScrolling() || mShowingHeaders || !isHeadersDataReady()) {
-                            return focused;
-                        }
-                        return mHeadersFragment.getVerticalGridView();
-                    } else if (direction == towardEnd) {
-                        if (isVerticalScrolling()) {
-                            return focused;
-                        } else if (mMainFragment != null && mMainFragment.getView() != null) {
-                            return mMainFragment.getView();
-                        }
-                        return focused;
-                    } else if (direction == View.FOCUS_DOWN && mShowingHeaders) {
-                        // disable focus_down moving into PageFragment.
-                        return focused;
-                    } else {
-                        return null;
-                    }
-                }
-            };
 
 }

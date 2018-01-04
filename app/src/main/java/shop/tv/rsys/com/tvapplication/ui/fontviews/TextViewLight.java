@@ -1,4 +1,4 @@
-package shop.tv.rsys.com.tvapplication.ui.font;
+package shop.tv.rsys.com.tvapplication.ui.fontviews;
 
 import android.content.Context;
 import android.graphics.Typeface;

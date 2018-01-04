@@ -1,19 +1,16 @@
-package shop.tv.rsys.com.tvapplication.custom;
+package shop.tv.rsys.com.tvapplication.customheader;
 
 /**
  * Created by Akash.Sharma on 12/6/2017.
  */
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.HeaderItem;
-import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.PageRow;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.RowHeaderPresenter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import shop.tv.rsys.com.tvapplication.R;

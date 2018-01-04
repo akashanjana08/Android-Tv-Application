@@ -24,8 +24,14 @@ public class RetrofitCallbackResponse {
         call.enqueue(new Callback<BtaResponseModel>() {
             @Override
             public void onResponse(Call<BtaResponseModel> call, Response<BtaResponseModel> response) {
-                List<BtaResponseModel.Movie> btaMovies= response.body().getMovie();
-                responseCallback.getResponse(btaMovies);
+                try {
+                    List<BtaResponseModel.Movie> btaMovies = response.body().getMovie();
+                    responseCallback.getResponse(btaMovies);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             @Override
