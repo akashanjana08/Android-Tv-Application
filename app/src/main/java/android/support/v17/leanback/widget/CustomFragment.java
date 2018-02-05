@@ -1,10 +1,13 @@
-package android.support.v17.leanback.app;
+package android.support.v17.leanback.widget;
 
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v17.leanback.app.BackgroundManager;
+import android.support.v17.leanback.app.BrowseFragment;
+import android.support.v17.leanback.app.RowsFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.FocusHighlight;
 import android.support.v17.leanback.widget.ListRow;
@@ -60,6 +63,7 @@ public class CustomFragment extends BrowseFragment {
         getMainFragmentRegistry().registerFragment(PageRow.class,
                 new PageRowFragmentFactory(mBackgroundManager));
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

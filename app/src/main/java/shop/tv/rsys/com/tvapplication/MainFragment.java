@@ -113,6 +113,7 @@ public class MainFragment extends BrowseFragment {
             mRowsAdapter.add(new ListRow(gridItemPresenterHeader, listRowAdapter));
         }
         setAdapter(mRowsAdapter);
+
     }
 
     private void prepareBackgroundManager() {
@@ -293,7 +294,7 @@ public class MainFragment extends BrowseFragment {
             };
             handler.postDelayed(runnable, 250);
         }
-        if ( view instanceof ViewGroup) {
+        if (view instanceof ViewGroup) {
             boolean found = hookIntoFocusSearch((ViewGroup) view);
             if ( found ){
                // Timber.d("Successfully fixed focus");   //This is just a log
@@ -323,7 +324,11 @@ public class MainFragment extends BrowseFragment {
                     @Override
                     public View onFocusSearch(View focused, int direction) {
                         if ( direction == View.FOCUS_UP ) {
-                            return getLastHeaderFocusView();
+                              // return getLastHeaderFocusView();
+                        }
+                        if ( direction == View.FOCUS_DOWN ) {
+                              // Toast.makeText(getActivity() , "On BrowseFragment" , Toast.LENGTH_LONG).show();
+                            return null;
                         }else {
                             return null;
                         }
@@ -343,7 +348,7 @@ public class MainFragment extends BrowseFragment {
     }
 
 
-    private View getLastHeaderFocusView()
+   /* private View getLastHeaderFocusView()
     {
         int lastHeaderFocus = HubActivity.headerFocus;
         int viewFocusId=0;
@@ -361,6 +366,6 @@ public class MainFragment extends BrowseFragment {
         }
         View view = getActivity().findViewById(viewFocusId);
         return  view;
-    }
+    }*/
 }
 

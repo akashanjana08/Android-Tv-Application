@@ -72,7 +72,7 @@
             android:layout_alignParentStart="true" />
         <fragment
             android:id="@+id/main_browse_fragment"
-            android:name="android.support.v17.leanback.app.CustomFragment"
+            android:name="android.support.v17.leanback.widget.CustomFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MainActivity"

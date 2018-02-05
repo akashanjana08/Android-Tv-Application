@@ -44,93 +44,63 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/header_views_linearlayout"
-        android:layout_width="wrap_content"
+    <!-- Fragment attach Header Menu Fragment -->
+    <!--<fragment
+        android:id="@+id/header_menu_fragment1"
+        android:name="shop.tv.rsys.com.tvapplication.hub.HeaderMenuFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="60dp"
-        >
+        tools:context=".hub.HubActivity"
+        tools:deviceIds="tv"
+        tools:ignore="MergeRootFrame"
+        android:layout_marginTop="20dp"
+        />-->
 
-        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
-            android:id="@+id/home_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:textColor="@drawable/button_focus"
-            android:textAllCaps="false"
-            android:textSize="20dp"
-            android:focusable="true"
-
-            />
-
-        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
-            android:id="@+id/mylib_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Library"
-            android:textColor="@drawable/button_focus"
-            android:textAllCaps="false"
-            android:layout_marginLeft="20dp"
-            android:focusable="true"
-            android:textSize="20dp"
-            />
+    <FrameLayout
+        android:id="@+id/header_menu_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:nextFocusDown="@+id/grid_container"
+        />
 
 
-        <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
-            android:id="@+id/shop_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="shop"
-            android:textColor="@drawable/button_focus"
-            android:textAllCaps="false"
-            android:focusable="true"
-            android:layout_marginLeft="20dp"
-            android:textSize="20dp"
-            />
 
-    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-
+        android:focusableInTouchMode="false"
         >
 
 
-        <LinearLayout
+        <!-- Fragment attach Hub Left  Menu Icon -->
+       <!-- <fragment
+                android:id="@+id/hub_left_menu_icon_fragment"
+                android:name="shop.tv.rsys.com.tvapplication.hub.HubMenuIconFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:context=".hub.HubActivity"
+                tools:deviceIds="tv"
+                tools:ignore="MergeRootFrame"
+                android:layout_marginTop="20dp"
+            />-->
+
+        <FrameLayout
+            android:id="@+id/hub_left_menu_icon_fragment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="45dp"
-            >
+            android:visibility="visible"
+            />
 
-            <Button
-                android:id="@+id/search_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/serach_selector"
-                />
 
-            <Button
-                android:id="@+id/hombvfe_texdstview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/setting_selector"
-                />
-
-            <Button
-                android:id="@+id/error_texdstview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ico_error_selector"
-                />
-
-        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
             >
 
             <ImageView
@@ -143,15 +113,23 @@
                 android:alpha="0.3"
                 />
 
-            <fragment
-                android:id="@+id/main_browse_fragment"
+           <!-- <fragment
+                android:id="@+id/main_browse_fragment1"
                 android:name="shop.tv.rsys.com.tvapplication.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".MainActivity"
                 tools:deviceIds="tv"
                 tools:ignore="MergeRootFrame"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"/>-->
+
+            <FrameLayout
+                android:id="@+id/grid_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+
+               />
         </RelativeLayout>
 
     </LinearLayout>

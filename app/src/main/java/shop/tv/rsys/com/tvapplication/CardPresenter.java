@@ -16,17 +16,15 @@ package shop.tv.rsys.com.tvapplication;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v17.leanback.widget.BaseCardView;
-import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.Presenter;
-import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
@@ -35,8 +33,8 @@ import com.bumptech.glide.Glide;
 public class CardPresenter extends Presenter {
     private static final String TAG = "CardPresenter";
 
-    private static final int CARD_WIDTH = 250;
-    private static final int CARD_HEIGHT = 306;
+    private static final int CARD_WIDTH = 500;
+    private static final int CARD_HEIGHT = 200;
     private static Drawable sSelectedBackgroundColor;
     private static Drawable sDefaultBackgroundColor;
     private Drawable mDefaultCardImage;
@@ -60,6 +58,10 @@ public class CardPresenter extends Presenter {
         view.findViewById(R.id.info_field).setBackgroundDrawable(color);
     }
 
+    private static void updateCardContextText(String text)
+    {
+
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -70,13 +72,14 @@ public class CardPresenter extends Presenter {
         sSelectedBackgroundColor = ContextCompat.getDrawable(mContext, R.drawable.card_back_ground_color);
         mDefaultCardImage = parent.getResources().getDrawable(R.drawable.movie);
 
-        ImageCardView cardView = new ImageCardView(parent.getContext()) {
+        final ImageCardView cardView = new ImageCardView(parent.getContext()) {
             @Override
             public void setSelected(boolean selected) {
                 updateCardBackgroundColor(this, selected);
                 super.setSelected(selected);
             }
         };
+
         //cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_SELECTED);
         cardView.clearFocus();
         cardView.setFocusable(true);
@@ -99,6 +102,7 @@ public class CardPresenter extends Presenter {
                     .load(movie.getCardImageUrl())
                     .centerCrop()
                     .error(mDefaultCardImage)
+                    .dontTransform()
                     .into(cardView.getMainImageView());
         }
     }

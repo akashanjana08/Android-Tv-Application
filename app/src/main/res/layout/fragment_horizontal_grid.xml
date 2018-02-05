@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/firstRelativeGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <android.support.v17.leanback.widget.MyHorizontalGridView
+            android:id="@+id/gridView1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingRight="755dp"
+            android:paddingLeft="0dp"
+            android:clipToPadding="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:nextFocusRight="@null"
+            android:focusable="true"
+            />
+
+
+        <android.support.v17.leanback.widget.MyHorizontalGridView
+            android:layout_width="155dp"
+            android:layout_height="200dp"
+            android:id="@+id/gridView2"
+            android:layout_alignBaseline="@+id/gridView1"
+            android:layout_marginLeft="0dp"
+            android:focusable="false"
+            android:nextFocusUp="@+id/home_textview"
+            android:nextFocusRight="@null"
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/secondRelativeGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:focusableInTouchMode="false">
+
+
+        <android.support.v17.leanback.widget.MyHorizontalGridView
+            android:id="@+id/gridView3"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingRight="755dp"
+            android:paddingLeft="0dp"
+            android:clipToPadding="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:focusable="true"/>
+
+
+        <android.support.v17.leanback.widget.MyHorizontalGridView
+            android:layout_width="155dp"
+            android:layout_height="200dp"
+            android:id="@+id/gridView4"
+            android:layout_alignBaseline="@+id/gridView3"
+            android:layout_marginLeft="0dp"
+            android:focusable="false"
+            android:descendantFocusability="blocksDescendants"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

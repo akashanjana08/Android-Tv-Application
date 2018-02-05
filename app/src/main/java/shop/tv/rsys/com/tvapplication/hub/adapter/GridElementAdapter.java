@@ -1,0 +1,134 @@
+package shop.tv.rsys.com.tvapplication.hub.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import shop.tv.rsys.com.tvapplication.R;
+
+
+/**
+ * Created by akash.sharma on 1/4/2018.
+ */
+
+public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.SimpleViewHolder> {
+
+    private Context context;
+    private List<String> elements;
+    private int lastPosition = -1;
+    int itemHeight;
+    int itemWidth;
+    int resource;
+    int posterImages[] = {R.drawable.movie_poster1, R.drawable.movie_poster2, R.drawable.movie_poster3, R.drawable.movie_poster4,
+            R.drawable.movie_poster5, R.drawable.movie_poster6};
+    List<Integer> posterImageList;
+    private boolean requestFocus;
+
+
+    public GridElementAdapter(Context context, int startPosition, int itemHeight, int itemWidth, int resource , boolean requestFocus) {
+        this.context = context;
+        this.itemHeight = itemHeight;
+        this.itemWidth = itemWidth;
+        this.resource = resource;
+        this.requestFocus = requestFocus;
+        posterImageList = new ArrayList<>();
+
+        this.elements = new ArrayList<>();
+        // Fill dummy list
+        for (int i = 0; i < 10; i++) {
+            this.elements.add(i, "Position : " + startPosition++);
+            posterImageList.add(posterImages[i % 6]);
+        }
+    }
+
+    public class SimpleViewHolder extends RecyclerView.ViewHolder {
+        //public final TextView textView;
+        public final CardView cardView;
+        public final ImageView imageView;
+
+        public SimpleViewHolder(View view) {
+            super(view);
+            //textView = (TextView) view.findViewById(R.id.tvTitle);
+            cardView = (CardView) view.findViewById(R.id.imagecardview);
+            imageView = (ImageView) view.findViewById(R.id.itemImage);
+            imageView.getLayoutParams().height = itemHeight;
+            //imageView.getLayoutParams().width  = itemWidth;
+            cardView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+
+                    System.out.print("OnCardFocus :"+v.getNextFocusRightId());
+                }
+            });
+        }
+    }
+
+    @Override
+    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(this.context).inflate(resource, parent, false);
+        return new SimpleViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final SimpleViewHolder holder, final int position) {
+
+        // Here you apply the animation when the view is bound
+        // setAnimation(holder.itemView, position);
+        // holder.textView.setText("Position :" + position);
+        holder.imageView.setBackgroundResource(posterImageList.get(position));
+
+        if(requestFocus && position==0) {
+            holder.cardView.requestFocus();
+        }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Click On Pos : " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.elements.size();
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        // Just as an example, return 0 or 2 depending on position
+        // Note that unlike in ListView adapters, types don't have to be contiguous
+        int pos = position % 2 * 2;
+        return pos;
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+
+
+
+}
