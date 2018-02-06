@@ -258,8 +258,8 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
 
     // To animate view slide out from top to bottom
     public void slideToBottom(View view) {
-        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, 100);
-        animate.setDuration(500);
+        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, 150);
+        animate.setDuration(200);
         animate.setFillAfter(true);
         view.startAnimation(animate);
         view.setVisibility(View.INVISIBLE);
@@ -267,11 +267,10 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
 
     // To animate view slide out from bottom to top
     public void slideToTop(View view) {
-        TranslateAnimation animate = new TranslateAnimation(0, 0, 100, 0);
-        animate.setDuration(500);
+        TranslateAnimation animate = new TranslateAnimation(0, 0, 150, 0);
+        animate.setDuration(200);
         animate.setFillAfter(true);
         view.startAnimation(animate);
         //view.setVisibility(View.INVISIBLE);
     }
-
 }

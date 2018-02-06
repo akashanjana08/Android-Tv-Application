@@ -36,12 +36,11 @@
             <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="mar. 19 dec | 06:28"
+                android:text="mar. 06 feb | 09:28"
                 android:textSize="15dp"
                 android:alpha="0.6"
                 />
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- Fragment attach Header Menu Fragment -->

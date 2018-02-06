@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,7 +33,15 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
     int resource;
     int posterImages[] = {R.drawable.movie_poster1, R.drawable.movie_poster2, R.drawable.movie_poster3, R.drawable.movie_poster4,
             R.drawable.movie_poster5, R.drawable.movie_poster6};
+
+    String movieTitle[] = {"The Hangover", "Kong: Skull Island", "Ghostbusters", "The Grey: LIVE OR DIE ON THE DAY",
+            "The Martian: 2015", "Fight Club: 1999"};
+
+    int movieDescription[] = {R.string.the_hangover, R.string.kong_skull_iland, R.string.ghostbusters, R.string.the_grey,
+            R.string.the_martian, R.string.fight_club};
     List<Integer> posterImageList;
+    List<String>  movieTitleList;
+    List<Integer> movieDescriptionList;
     private boolean requestFocus;
 
 
@@ -43,12 +52,16 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
         this.resource = resource;
         this.requestFocus = requestFocus;
         posterImageList = new ArrayList<>();
+        movieTitleList = new ArrayList<>();
+        movieDescriptionList = new ArrayList<>();
 
         this.elements = new ArrayList<>();
         // Fill dummy list
         for (int i = 0; i < 10; i++) {
             this.elements.add(i, "Position : " + startPosition++);
             posterImageList.add(posterImages[i % 6]);
+            movieTitleList.add(movieTitle[i % 6]);
+            movieDescriptionList.add(movieDescription[i % 6]);
         }
     }
 
@@ -56,10 +69,15 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
         //public final TextView textView;
         public final CardView cardView;
         public final ImageView imageView;
+        public TextView textViewMovieTitle,textViewMovieDescription;
 
         public SimpleViewHolder(View view) {
             super(view);
-            //textView = (TextView) view.findViewById(R.id.tvTitle);
+
+            textViewMovieTitle = (TextView) view.findViewById(R.id.movie_title);
+            textViewMovieDescription = (TextView) view.findViewById(R.id.movie_description);
+
+
             cardView = (CardView) view.findViewById(R.id.imagecardview);
             imageView = (ImageView) view.findViewById(R.id.itemImage);
             imageView.getLayoutParams().height = itemHeight;
@@ -87,6 +105,8 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
         // setAnimation(holder.itemView, position);
         // holder.textView.setText("Position :" + position);
         holder.imageView.setBackgroundResource(posterImageList.get(position));
+        holder.textViewMovieTitle.setText(movieTitleList.get(position));
+        holder.textViewMovieDescription.setText(context.getString(movieDescriptionList.get(position)));
 
         if(requestFocus && position==0) {
             holder.cardView.requestFocus();
