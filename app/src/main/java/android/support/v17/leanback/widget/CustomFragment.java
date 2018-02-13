@@ -1,6 +1,7 @@
 package android.support.v17.leanback.widget;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,13 +19,20 @@ import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import shop.tv.rsys.com.tvapplication.BrowseErrorActivity;
 import shop.tv.rsys.com.tvapplication.CardPresenter;
+import shop.tv.rsys.com.tvapplication.DetailsActivity;
+import shop.tv.rsys.com.tvapplication.MainFragment;
 import shop.tv.rsys.com.tvapplication.Movie;
 import shop.tv.rsys.com.tvapplication.R;
 import shop.tv.rsys.com.tvapplication.customheader.IconHeaderItem;
@@ -52,6 +60,7 @@ public class CustomFragment extends BrowseFragment {
     private ArrayObjectAdapter mRowsAdapter;
     static List<Movie> list;
     static ProgressBar progressBar;
+    private static ItemViewClickedListener itemViewClickedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,22 @@ public class CustomFragment extends BrowseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         progressBar = (ProgressBar)getActivity().findViewById(R.id.progressBar);
+        setupEventListeners();
     }
+
+
+    private  void setupEventListeners() {
+        /*setOnSearchClickedListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Implement your own in-app search", Toast.LENGTH_LONG)
+                        .show();
+            }
+        });*/
+        initFocusManagement();
+        itemViewClickedListener = new ItemViewClickedListener();
+    }
+
 
     private void setupUi() {
         // setBadgeDrawable(getActivity().getResources().getDrawable(
@@ -156,17 +180,7 @@ public class CustomFragment extends BrowseFragment {
             mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
 
             setAdapter(mRowsAdapter);
-            setOnItemViewClickedListener(new OnItemViewClickedListener() {
-                @Override
-                public void onItemClicked(
-                        Presenter.ViewHolder itemViewHolder,
-                        Object item,
-                        RowPresenter.ViewHolder rowViewHolder,
-                        Row row) {
-                    Toast.makeText(getActivity(), "Implement click handler", Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
+            setOnItemViewClickedListener(itemViewClickedListener);
         }
 
         @Override
@@ -221,6 +235,35 @@ public class CustomFragment extends BrowseFragment {
         }
     }
 
+
+    private final  class ItemViewClickedListener implements OnItemViewClickedListener {
+        @Override
+        public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
+                                  RowPresenter.ViewHolder rowViewHolder, Row row) {
+
+            if (item instanceof Movie) {
+                Movie movie = (Movie) item;
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                intent.putExtra(DetailsActivity.MOVIE, movie);
+
+                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        getActivity(),
+                        ((ImageCardView) itemViewHolder.view).getMainImageView(),
+                        DetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+                getActivity().startActivity(intent, bundle);
+            } else if (item instanceof String) {
+                if (((String) item).indexOf(getString(R.string.error_fragment)) >= 0) {
+                    Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        }
+    }
+
+
     private static Map<String,String> getQueryMap(String sortValue)
     {
         Map<String,String> queryMap = new HashMap<>();
@@ -237,4 +280,73 @@ public class CustomFragment extends BrowseFragment {
         return queryMap;
     }
 
+
+    private final int maxHookIntoFocusTries = 5;
+    private int hookIntoFocusTries = 0;
+
+    private void initFocusManagement() {
+        View view = getView();
+        Handler handler = new Handler();
+        if(view == null){
+            //Wait for the view to be added
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    initFocusManagement();
+                }
+            };
+            handler.postDelayed(runnable, 250);
+        }
+        if (view instanceof ViewGroup) {
+            boolean found = hookIntoFocusSearch((ViewGroup) view);
+            if ( found ){
+                // Timber.d("Successfully fixed focus");   //This is just a log
+            }else if(hookIntoFocusTries < maxHookIntoFocusTries){
+                //Allow multiple attempts to hook into the focus system
+                //I want to say this was needed for when the browse fragment was
+                //created but the child content hadn't been populated yet.
+                //Been a while since I've messed with this code though
+                hookIntoFocusTries++;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initFocusManagement();
+                    }
+                }, 250);
+            }
+        }
+    }
+
+    private boolean hookIntoFocusSearch(ViewGroup vg) {
+        boolean found = false;
+        for ( int i=0; i<vg.getChildCount(); i++ ) {
+            View view = vg.getChildAt(i);
+            if ( view instanceof BrowseFrameLayout) {
+                BrowseFrameLayout bfl = (BrowseFrameLayout)view;
+                bfl.setOnFocusSearchListener(new BrowseFrameLayout.OnFocusSearchListener() {
+                    @Override
+                    public View onFocusSearch(View focused, int direction) {
+                        if ( direction == View.FOCUS_UP ) {
+                             //return getActivity().findViewById(R.id.voice_search_imageview);
+                        }
+                        if ( direction == View.FOCUS_DOWN ) {
+                            // Toast.makeText(getActivity() , "On BrowseFragment" , Toast.LENGTH_LONG).show();
+                            return null;
+                        }else {
+                            return null;
+                        }
+                    }
+                });
+                found = true;
+                break;
+            } else if ( view instanceof ViewGroup ) {
+                boolean foundInRecurse = hookIntoFocusSearch((ViewGroup)view);
+                if ( foundInRecurse ) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
 }

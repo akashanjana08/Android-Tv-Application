@@ -5,15 +5,14 @@
     android:id="@+id/top_header"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#010226"
->
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="10dp"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="50dp"
@@ -24,8 +23,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
 
             <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
@@ -36,71 +35,56 @@
             <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="mar. 06 feb | 09:28"
-                android:textSize="15dp"
                 android:alpha="0.6"
-                />
+                android:text="mar. 06 feb | 09:28"
+                android:textSize="15dp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/voice_search_imageview"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:nextFocusDown="@+id/home_textview"
+            android:src="@drawable/text_with_voice_search"
+            android:text="voice search" />
+
+
     </LinearLayout>
 
     <!-- Fragment attach Header Menu Fragment -->
-    <!--<fragment
-        android:id="@+id/header_menu_fragment1"
-        android:name="shop.tv.rsys.com.tvapplication.hub.HeaderMenuFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".hub.HubActivity"
-        tools:deviceIds="tv"
-        tools:ignore="MergeRootFrame"
-        android:layout_marginTop="20dp"
-        />-->
-
     <FrameLayout
         android:id="@+id/header_menu_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:nextFocusDown="@+id/grid_container"
-        />
-
-
-
-
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:focusableInTouchMode="false"
-        >
+        android:orientation="horizontal">
 
 
         <!-- Fragment attach Hub Left  Menu Icon -->
-       <!-- <fragment
-                android:id="@+id/hub_left_menu_icon_fragment"
-                android:name="shop.tv.rsys.com.tvapplication.hub.HubMenuIconFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                tools:context=".hub.HubActivity"
-                tools:deviceIds="tv"
-                tools:ignore="MergeRootFrame"
-                android:layout_marginTop="20dp"
-            />-->
-
         <FrameLayout
             android:id="@+id/hub_left_menu_icon_fragment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            />
-
+            android:visibility="visible" />
 
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            >
+            android:focusableInTouchMode="false">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -108,19 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="false"
-                android:src="@drawable/gradient_main"
                 android:alpha="0.3"
-                />
-
-           <!-- <fragment
-                android:id="@+id/main_browse_fragment1"
-                android:name="shop.tv.rsys.com.tvapplication.MainFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".MainActivity"
-                tools:deviceIds="tv"
-                tools:ignore="MergeRootFrame"
-                android:layout_marginTop="20dp"/>-->
+                android:src="@drawable/gradient_main" />
 
             <FrameLayout
                 android:id="@+id/grid_container"
@@ -128,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:visibility="visible"
 
-               />
+                />
         </RelativeLayout>
 
     </LinearLayout>
@@ -140,6 +113,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </LinearLayout>

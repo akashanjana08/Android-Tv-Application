@@ -14,9 +14,13 @@
 
 package shop.tv.rsys.com.tvapplication;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+        import android.app.Activity;
+        import android.os.Bundle;
+        import android.support.v4.content.ContextCompat;
+        import android.view.View;
+        import android.view.animation.TranslateAnimation;
+        import android.widget.ImageView;
+        import android.widget.Toast;
 
 /*
  * MainActivity class that loads MainFragment
@@ -25,11 +29,13 @@ public class MainActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
+    ImageView voiceSearchImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().getDecorView().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.gradient_main));
+
     }
 }

@@ -11,7 +11,8 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class RetrofitApiClient {
     private static Retrofit retrofit;
-    private static String base_url = "http://10.67.194.30:8085/";
+    //private static String base_url = "http://10.67.194.30:8085/";
+    private static String base_url = "http://10.67.194.40/";
     public static Retrofit getApiClient()
     {
         if(retrofit==null){

@@ -17,9 +17,14 @@ public class BtaResponseModel {
     @Path("Movies")
     private List<Movie> Movie;
 
+
+
+
     public List<BtaResponseModel.Movie> getMovie() {
         return Movie;
     }
+
+
 
     public void setMovie(List<BtaResponseModel.Movie> movie) {
         Movie = movie;

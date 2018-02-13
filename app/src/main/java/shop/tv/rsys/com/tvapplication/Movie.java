@@ -29,11 +29,11 @@ public class Movie implements Serializable {
     private static long count = 0;
     private long id;
     private String title;
-    private String description;
+    private String description = "A blowout Las Vegas bachelor party turns into a race against time when three hung-over groomsmen awaken after a night of drunken debauchery to find that the groom has gone missing, and attempt to get him to the alter in time for his wedding.";
     private String bgImageUrl="http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg";
-    private String cardImageUrl;
-    private String videoUrl;
-    private String studio;
+    private String cardImageUrl="http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg";
+    private String videoUrl="http://commondatastorage.googleapis.com/android-tv/Sample%20videos/Zeitgeist/Zeitgeist%202010_%20Year%20in%20Review/bg.jpg";
+    private String studio = "";
     private String category="Cat";
 
     public Movie() {

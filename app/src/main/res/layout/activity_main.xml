@@ -9,7 +9,7 @@
     android:background="#010226"
     >
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="10dp"
@@ -19,7 +19,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
-            android:src="@mipmap/ic_launcher_pxs" />
+            android:src="@mipmap/ic_launcher_pxs"
+           />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,7 +31,7 @@
             <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="shop"
+                android:text="Shop"
                 android:textSize="22dp" />
 
             <shop.tv.rsys.com.tvapplication.ui.fontviews.TextViewLight
@@ -41,6 +42,7 @@
                 android:alpha="0.6"
                 />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

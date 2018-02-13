@@ -84,7 +84,7 @@ public class VideoDetailsFragment extends DetailsFragment {
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            setupMovieListRow();
+            //setupMovieListRow(); ///////////////////////////////////Change By Akash sharma ////////////////////////////////////////
             setupMovieListRowPresenter();
             updateBackground(mSelectedMovie.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());

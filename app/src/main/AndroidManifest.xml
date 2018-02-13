@@ -14,15 +14,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_pxs_tv"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback">
         <activity android:name=".hub.HubActivity"
-            android:banner="@mipmap/ic_launcher_pxs_tv"
-            android:icon="@mipmap/ic_launcher_pxs_tv"
+            android:banner="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:logo="@mipmap/ic_launcher_pxs_tv"
+            android:logo="@mipmap/ic_launcher"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

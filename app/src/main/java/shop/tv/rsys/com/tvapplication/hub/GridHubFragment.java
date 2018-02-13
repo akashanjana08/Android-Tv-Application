@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v17.leanback.widget.MyHorizontalGridView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,18 +36,19 @@ import shop.tv.rsys.com.tvapplication.ui.fontviews.CustomScrollView;
 public class GridHubFragment extends Fragment implements IKeyEventListener {
 
     private MyHorizontalGridView horizontalGridView1, horizontalGridView2, horizontalGridView3, horizontalGridView4;
-    RelativeLayout firstRelativeGrid, secondRelativeGrid;
-    View currentFocusView;
+    private RelativeLayout firstRelativeGrid, secondRelativeGrid;
+    private View currentFocusView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_horizontal_grid, container, false);
+
         horizontalGridView1 = (MyHorizontalGridView) view.findViewById(R.id.gridView1);
         horizontalGridView2 = (MyHorizontalGridView) view.findViewById(R.id.gridView2);
-        firstRelativeGrid = (RelativeLayout) view.findViewById(R.id.firstRelativeGrid);
-        secondRelativeGrid = (RelativeLayout) view.findViewById(R.id.secondRelativeGrid);
+        firstRelativeGrid   = (RelativeLayout) view.findViewById(R.id.firstRelativeGrid);
+        secondRelativeGrid  = (RelativeLayout) view.findViewById(R.id.secondRelativeGrid);
 
 
         GridElementAdapter adapter1 = new GridElementAdapter(getActivity(), 0, 200, 314, R.layout.grid_element, true);
@@ -62,7 +64,7 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
         horizontalGridView2.setAdapter(adapter2);
         SpeedyLinearLayoutManager linearLayoutManager2 = new SpeedyLinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalGridView2.setLayoutManager(linearLayoutManager2);
-
+       // horizontalGridView2.setFocusable(false);
 
         /** second row grid */
 
@@ -74,7 +76,7 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
         SpeedyLinearLayoutManager linearLayoutManager3 = new SpeedyLinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalGridView3.setLayoutManager(linearLayoutManager3);
 
-
+       // horizontalGridView4.setFocusable(false);
         horizontalGridView4.setAdapter(adapter4);
         SpeedyLinearLayoutManager linearLayoutManager4 = new SpeedyLinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalGridView4.setLayoutManager(linearLayoutManager4);
@@ -88,18 +90,19 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
 
 
     int i = 0, j = 0;
+
     /**
      * Override method of {@link IKeyEventListener}
      */
     @Override
-    public void onKeyDownEventKey(final int keyCode, FrameLayout mHeaderMenuFramelayout) {
+    public void onKeyDownEventKey(final int keyCode,final FrameLayout mHeaderMenuFramelayout) {
 
         System.out.println("GridView-1  " + horizontalGridView1.hasFocus());
         System.out.println("GridView-2  " + horizontalGridView2.hasFocus());
         System.out.println("GridView-3  " + horizontalGridView3.hasFocus());
         System.out.println("GridView-4  " + horizontalGridView4.hasFocus());
         System.out.println("=============================================");
-
+        System.out.println("Current Focus Now" + getActivity().getCurrentFocus());
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -117,9 +120,9 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
                 if ((horizontalGridView1.hasFocus() || horizontalGridView2.hasFocus())) {
                     if ((horizontalGridView2.getVisibility() != View.VISIBLE)) {
                         slideToTop(horizontalGridView2);
-                        System.out.println("Current Focus View"+currentFocusView);
-                        if(currentFocusView.getId() == R.id.imagecardview)
-                           slideToBottom(horizontalGridView4);
+                        // System.out.println("Current Focus View"+currentFocusView);
+                        if (currentFocusView.getId() == R.id.imagecardview)
+                            slideToBottom(horizontalGridView4);
                     }
 
                     horizontalGridView2.setVisibility(View.VISIBLE);
@@ -143,62 +146,11 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
                         slideToBottom(horizontalGridView4);
                     }
                 }
-                currentFocusView =  getActivity().getCurrentFocus();
+                currentFocusView = getActivity().getCurrentFocus();
             }
         });
-
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
-        }
-
-
-
-        if ((horizontalGridView2.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)) {
-            horizontalGridView1.smoothScrollBy(-horizontalGridView1.getChildAt(0).getWidth(), 0);
-            horizontalGridView2.smoothScrollBy(-horizontalGridView2.getChildAt(0).getWidth(), 0);
-            if (i != 0) {
-                i--;
-                secondRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-            }
-
-            horizontalGridView1.smoothScrollToPosition(i);
-            horizontalGridView2.smoothScrollToPosition(i);
-
-        } else if ((horizontalGridView4.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)) {
-
-            horizontalGridView3.smoothScrollBy(-horizontalGridView3.getChildAt(0).getWidth(), 0);
-            horizontalGridView4.smoothScrollBy(-horizontalGridView4.getChildAt(0).getWidth(), 0);
-            if (j != 0) {
-                j--;
-                firstRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-            }
-            horizontalGridView3.smoothScrollToPosition(j);
-            horizontalGridView4.smoothScrollToPosition(j);
-        } else if ((horizontalGridView2.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)) {
-            horizontalGridView1.smoothScrollBy(horizontalGridView1.getChildAt(0).getWidth(), 0);
-            horizontalGridView2.smoothScrollBy(horizontalGridView2.getChildAt(0).getWidth(), 0);
-            if (i != (horizontalGridView2.getAdapter().getItemCount() - 1) && i < (horizontalGridView2.getAdapter().getItemCount() - 1)) {
-                i++;
-                secondRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            }
-
-            horizontalGridView1.smoothScrollToPosition(i);
-            horizontalGridView2.smoothScrollToPosition(i);
-        } else if ((horizontalGridView4.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)) {
-            horizontalGridView3.smoothScrollBy(horizontalGridView3.getChildAt(0).getWidth(), 0);
-            horizontalGridView4.smoothScrollBy(horizontalGridView4.getChildAt(0).getWidth(), 0);
-            if (j != (horizontalGridView3.getAdapter().getItemCount() - 1) && j < (horizontalGridView3.getAdapter().getItemCount() - 1)) {
-                j++;
-                firstRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            }
-            horizontalGridView3.smoothScrollToPosition(j);
-            horizontalGridView4.smoothScrollToPosition(j);
-        }
+        gridscrolling( keyCode  ,  mHeaderMenuFramelayout);
     }
-
 
     public class SpeedyLinearLayoutManager extends LinearLayoutManager {
 
@@ -272,5 +224,58 @@ public class GridHubFragment extends Fragment implements IKeyEventListener {
         animate.setFillAfter(true);
         view.startAnimation(animate);
         //view.setVisibility(View.INVISIBLE);
+    }
+
+
+    private void gridscrolling(int keyCode  , FrameLayout mHeaderMenuFramelayout)
+    {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+        }
+
+
+        if ((horizontalGridView2.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)) {
+            horizontalGridView1.smoothScrollBy(-horizontalGridView1.getChildAt(0).getWidth(), 0);
+            horizontalGridView2.smoothScrollBy(-horizontalGridView2.getChildAt(0).getWidth(), 0);
+            if (i != 0) {
+                i--;
+                secondRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+            }
+
+            horizontalGridView1.smoothScrollToPosition(i);
+            horizontalGridView2.smoothScrollToPosition(i);
+
+        } else if ((horizontalGridView4.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)) {
+
+            horizontalGridView3.smoothScrollBy(-horizontalGridView3.getChildAt(0).getWidth(), 0);
+            horizontalGridView4.smoothScrollBy(-horizontalGridView4.getChildAt(0).getWidth(), 0);
+            if (j != 0) {
+                j--;
+                firstRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+            }
+            horizontalGridView3.smoothScrollToPosition(j);
+            horizontalGridView4.smoothScrollToPosition(j);
+        } else if ((horizontalGridView2.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)) {
+            horizontalGridView1.smoothScrollBy(horizontalGridView1.getChildAt(0).getWidth(), 0);
+            horizontalGridView2.smoothScrollBy(horizontalGridView2.getChildAt(0).getWidth(), 0);
+            if (i != (horizontalGridView2.getAdapter().getItemCount() - 1) && i < (horizontalGridView2.getAdapter().getItemCount() - 1)) {
+                i++;
+                secondRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            }
+
+            horizontalGridView1.smoothScrollToPosition(i);
+            horizontalGridView2.smoothScrollToPosition(i);
+        } else if ((horizontalGridView4.getVisibility() == View.VISIBLE) && (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)) {
+            horizontalGridView3.smoothScrollBy(horizontalGridView3.getChildAt(0).getWidth(), 0);
+            horizontalGridView4.smoothScrollBy(horizontalGridView4.getChildAt(0).getWidth(), 0);
+            if (j != (horizontalGridView3.getAdapter().getItemCount() - 1) && j < (horizontalGridView3.getAdapter().getItemCount() - 1)) {
+                j++;
+                firstRelativeGrid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                mHeaderMenuFramelayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            }
+            horizontalGridView3.smoothScrollToPosition(j);
+            horizontalGridView4.smoothScrollToPosition(j);
+        }
     }
 }

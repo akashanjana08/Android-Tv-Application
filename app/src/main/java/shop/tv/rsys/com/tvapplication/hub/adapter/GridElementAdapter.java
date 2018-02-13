@@ -77,16 +77,22 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
             textViewMovieTitle = (TextView) view.findViewById(R.id.movie_title);
             textViewMovieDescription = (TextView) view.findViewById(R.id.movie_description);
 
-
             cardView = (CardView) view.findViewById(R.id.imagecardview);
             imageView = (ImageView) view.findViewById(R.id.itemImage);
             imageView.getLayoutParams().height = itemHeight;
             //imageView.getLayoutParams().width  = itemWidth;
-            cardView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            // bind focus listener
+            view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-
-                    System.out.print("OnCardFocus :"+v.getNextFocusRightId());
+                    if (hasFocus) {
+                        // run scale animation and make it bigger
+                        cardView.setVisibility(View.INVISIBLE);
+                    } else {
+                        // run scale animation and make it smaller
+                        // view.getLayoutParams().height = 200;
+                        cardView.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
@@ -148,7 +154,4 @@ public class GridElementAdapter extends RecyclerView.Adapter<GridElementAdapter.
             lastPosition = position;
         }
     }
-
-
-
 }

@@ -226,7 +226,6 @@ public class MainFragment extends BrowseFragment {
                 mBackgroundURI = ((Movie) item).getBackgroundImageURI();
                 startBackgroundTimer();
             }
-
         }
     }
 
